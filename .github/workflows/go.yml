@@ -38,5 +38,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: dist/nochmal-linux-amd64
+        name: nochmal-linux-amd64
         path: dist/nochmal-linux-amd64
