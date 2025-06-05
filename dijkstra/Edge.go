@@ -6,24 +6,24 @@ type Edge interface {
 	GetCosts() int
 }
 
-func CreateEdge() Edge {
-	return &EdgeImpl{}
+func CreateEdge(source, destination Node, costs int) Edge {
+	return &edgeImpl{source, destination, costs}
 }
 
-type EdgeImpl struct {
+type edgeImpl struct {
 	source      Node
 	destination Node
 	costs       int
 }
 
-func (e *EdgeImpl) GetSource() Node {
+func (e *edgeImpl) GetSource() Node {
 	return e.source
 }
 
-func (e *EdgeImpl) GetDestination() Node {
+func (e *edgeImpl) GetDestination() Node {
 	return e.destination
 }
 
-func (e *EdgeImpl) GetCosts() int {
+func (e *edgeImpl) GetCosts() int {
 	return e.costs
 }
