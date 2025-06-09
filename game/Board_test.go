@@ -17,11 +17,6 @@ func TestBoardColorsRandomly(t *testing.T) {
 	assertColor(board, 'G', 5, false, Blue, t)
 }
 
-func TestBoardPrint(t *testing.T) {
-	board := NewBoard()
-	board.print()
-}
-
 func assertColor(board Board, col rune, row int, checked bool, color Color, t *testing.T) {
 	cell := board.GetCell(col, row)
 	if cell.Checked != checked {

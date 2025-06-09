@@ -51,13 +51,20 @@ func (b *Board) getCell(col, row int) *Cell {
 	return &b.cells[col][row]
 }
 
-func (b *Board) print() {
+func (b *Board) Print() {
 	fmt.Println("  A B C D E F G H I J K L M N O")
 	for row := 0; row < len(b.cells[0]); row++ {
 		fmt.Print(row+1, " ")
 		for col := 0; col < len(b.cells); col++ {
-			color := b.getCell(col, row).Color
-			fmt.Print(color.Code(), "□ ", "\033[0m")
+			cell := b.getCell(col, row)
+			color := cell.Color
+			fmt.Print(color.Code())
+			if cell.Checked {
+				fmt.Print("X ")
+			} else {
+				fmt.Print("□ ")
+			}
+			fmt.Print("\033[0m")
 		}
 		fmt.Println("")
 	}
