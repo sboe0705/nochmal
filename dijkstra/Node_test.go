@@ -14,3 +14,19 @@ func TestCreateNode(t *testing.T) {
 	assertions.AssertInt(t, -1, node.GetDistance(), "Wrong initial distance")
 	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
 }
+
+func TestConnectWith(t *testing.T) {
+	node1 := CreateNode()
+	node2 := CreateNode()
+	costs := 5
+
+	// when
+	node1.ConnectWith(node2, costs)
+
+	// then
+	assertions.AssertInt(t, 1, len(node1.GetEdges()), "Missing edge on node 1")
+	assertions.AssertInt(t, 1, len(node2.GetEdges()), "Missing edge on node 2")
+
+	assertions.AssertObject(t, node1.GetEdges()[0], node2.GetEdges()[0], "Different edge in connected nodes")
+	assertions.AssertInt(t, costs, node1.GetEdges()[0].GetCosts(), "Wrong costs")
+}
