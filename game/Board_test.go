@@ -5,7 +5,6 @@ import (
 )
 
 func TestBoardColorsRandomly(t *testing.T) {
-	// given
 	board := NewBoard()
 
 	// when ... then
@@ -16,6 +15,11 @@ func TestBoardColorsRandomly(t *testing.T) {
 	assertColor(board, 'E', 5, false, Orange, t)
 	assertColor(board, 'F', 5, false, Pink, t)
 	assertColor(board, 'G', 5, false, Blue, t)
+}
+
+func TestBoardPrint(t *testing.T) {
+	board := NewBoard()
+	board.print()
 }
 
 func assertColor(board Board, col rune, row int, checked bool, color Color, t *testing.T) {

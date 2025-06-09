@@ -1,5 +1,9 @@
 package game
 
+import (
+	"fmt"
+)
+
 func NewBoard() Board {
 	board := &Board{}
 	board.init()
@@ -10,7 +14,7 @@ type Board struct {
 	cells [15][7]Cell
 }
 
-func (board *Board) init() {
+func (b *Board) init() {
 	colors := []Color{
 		Green, Orange, Blue, Blue, Pink, Pink, Yellow, // A
 		Green, Green, Green, Pink, Orange, Blue, Yellow, // B
@@ -29,9 +33,9 @@ func (board *Board) init() {
 		Yellow, Green, Green, Blue, Pink, Orange, Orange, // O
 	}
 	colorIndex := 0
-	for col := 'A'; col <= 'O'; col++ {
-		for row := 1; row <= 7; row++ {
-			cell := board.GetCell(col, row)
+	for col := 0; col < len(b.cells); col++ {
+		for row := 0; row < len(b.cells[col]); row++ {
+			cell := b.getCell(col, row)
 			cell.Checked = false
 			cell.Color = colors[colorIndex]
 			colorIndex++
@@ -39,12 +43,22 @@ func (board *Board) init() {
 	}
 }
 
-func (board *Board) GetCell(col rune, row int) *Cell {
-	println("GetCell(rune,int)")
-	return board.getCell(int(col-'A'), row-1)
+func (b *Board) GetCell(col rune, row int) *Cell {
+	return b.getCell(int(col-'A'), row-1)
 }
 
-func (board *Board) getCell(col, row int) *Cell {
-	println("GetCell(int,int)")
-	return &board.cells[col][row]
+func (b *Board) getCell(col, row int) *Cell {
+	return &b.cells[col][row]
+}
+
+func (b *Board) print() {
+	fmt.Println("  A B C D E F G H I J K L M N O")
+	for row := 0; row < len(b.cells[0]); row++ {
+		fmt.Print(row+1, " ")
+		for col := 0; col < len(b.cells); col++ {
+			color := b.getCell(col, row).Color
+			fmt.Print(color.Code(), "□ ", "\033[0m")
+		}
+		fmt.Println("")
+	}
 }

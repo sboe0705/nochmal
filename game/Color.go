@@ -26,3 +26,20 @@ func (s Color) ToString() string {
 		return "Unknown"
 	}
 }
+
+func (s Color) Code() string {
+	switch s {
+	case Green:
+		return "\033[32m"
+	case Yellow:
+		return "\033[33m"
+	case Blue:
+		return "\033[34m"
+	case Pink:
+		return "\033[35m"
+	case Orange:
+		return "\033[38;5;208m"
+	default:
+		return "Unknown"
+	}
+}
