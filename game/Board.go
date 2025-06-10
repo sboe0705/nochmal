@@ -33,8 +33,8 @@ func (b *Board) init() {
 		Yellow, Green, Green, Blue, Pink, Orange, Orange, // O
 	}
 	colorIndex := 0
-	for col := 0; col < len(b.cells); col++ {
-		for row := 0; row < len(b.cells[col]); row++ {
+	for col := range len(b.cells) {
+		for row := range len(b.cells[col]) {
 			cell := b.getCell(col, row)
 			cell.Checked = false
 			cell.Color = colors[colorIndex]
@@ -53,9 +53,9 @@ func (b *Board) getCell(col, row int) *Cell {
 
 func (b *Board) Print() {
 	fmt.Println("  A B C D E F G H I J K L M N O")
-	for row := 0; row < len(b.cells[0]); row++ {
+	for row := range len(b.cells[0]) {
 		fmt.Print(row+1, " ")
-		for col := 0; col < len(b.cells); col++ {
+		for col := range len(b.cells) {
 			cell := b.getCell(col, row)
 			color := cell.Color
 			fmt.Print(color.Code())
