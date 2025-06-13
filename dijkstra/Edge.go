@@ -3,6 +3,7 @@ package dijkstra
 type Edge interface {
 	GetSource() Node
 	GetDestination() Node
+	GetOtherNode(node Node) Node
 	GetCosts() int
 }
 
@@ -26,4 +27,12 @@ func (e *edgeImpl) GetDestination() Node {
 
 func (e *edgeImpl) GetCosts() int {
 	return e.costs
+}
+
+func (e *edgeImpl) GetOtherNode(node Node) Node {
+	if e.GetSource() == node {
+		return e.GetDestination()
+	} else {
+		return e.GetSource()
+	}
 }
