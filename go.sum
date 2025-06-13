@@ -4,3 +4,5 @@ github.com/sboe0705/assertions v0.0.2 h1:c4X1wgUyG+S8l1BChyJHMbvxfwxf+NnW7jfaqV8
 github.com/sboe0705/assertions v0.0.2/go.mod h1:JngGheRw7B99tJpsVD1lQIsEEevaAGTT0eCoddGKHuc=
 github.com/sboe0705/assertions v0.0.3 h1:ta0Fe4XtV6BQ2DF0nuDaThdEE/FMCnanZgG6S12fQJE=
 github.com/sboe0705/assertions v0.0.3/go.mod h1:JngGheRw7B99tJpsVD1lQIsEEevaAGTT0eCoddGKHuc=
+github.com/sboe0705/assertions v0.0.4 h1:+ZS+BbUbbB1affq+nJIJyq+mAL+jOaBcezFC1R0EFJs=
+github.com/sboe0705/assertions v0.0.4/go.mod h1:JngGheRw7B99tJpsVD1lQIsEEevaAGTT0eCoddGKHuc=

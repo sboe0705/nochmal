@@ -15,7 +15,7 @@ func TestCreateEdge(t *testing.T) {
 	edge := CreateEdge(node1, node2, costs)
 
 	// then
-	assertions.AssertInt(t, costs, edge.GetCosts(), "Wrong costs")
-	assertions.AssertObject(t, node1, edge.GetSource(), "Wrong source node")
-	assertions.AssertObject(t, node2, edge.GetDestination(), "Wrong destination node")
+	assertions.AssertEquals(t, costs, edge.GetCosts(), "Wrong costs")
+	assertions.AssertEquals(t, node1, edge.GetSource(), "Wrong source node")
+	assertions.AssertEquals(t, node2, edge.GetDestination(), "Wrong destination node")
 }
