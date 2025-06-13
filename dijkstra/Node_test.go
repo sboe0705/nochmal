@@ -14,6 +14,20 @@ func TestCreateNode(t *testing.T) {
 	assertions.AssertEquals(t, -1, node.GetDistance(), "Wrong initial distance")
 	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
 	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
+	assertions.AssertEquals(t, "&{name: edges:[] distance:-1 visited:false}", node.ToString(), "Wrong initial name")
+}
+
+func TestCreateNamedNode(t *testing.T) {
+	nodeName := "Node 1"
+
+	// when
+	node := CreateNamedNode(nodeName)
+
+	// then
+	assertions.AssertEquals(t, -1, node.GetDistance(), "Wrong initial distance")
+	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
+	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
+	assertions.AssertEquals(t, nodeName, node.ToString(), "Invalid name")
 }
 
 func TestConnectWith(t *testing.T) {

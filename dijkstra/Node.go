@@ -1,5 +1,7 @@
 package dijkstra
 
+import "fmt"
+
 type Node interface {
 	GetEdges() []Edge
 	AddEdge(edge Edge)
@@ -8,13 +10,19 @@ type Node interface {
 	ConnectWith(node Node, costs int)
 	IsVisited() bool
 	SetVisited(bool)
+	ToString() string
 }
 
 func CreateNode() Node {
-	return &nodeImpl{[]Edge{}, -1, false}
+	return &nodeImpl{"", []Edge{}, -1, false}
+}
+
+func CreateNamedNode(name string) Node {
+	return &nodeImpl{name, []Edge{}, -1, false}
 }
 
 type nodeImpl struct {
+	name     string
 	edges    []Edge
 	distance int
 	visited  bool
@@ -48,4 +56,11 @@ func (n *nodeImpl) IsVisited() bool {
 
 func (n *nodeImpl) SetVisited(visited bool) {
 	n.visited = visited
+}
+
+func (n *nodeImpl) ToString() string {
+	if len(n.name) > 0 {
+		return n.name
+	}
+	return fmt.Sprintf("%+v", n)
 }
