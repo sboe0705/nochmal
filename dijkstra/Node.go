@@ -6,15 +6,18 @@ type Node interface {
 	GetDistance() int
 	SetDistance(int)
 	ConnectWith(node Node, costs int)
+	IsVisited() bool
+	SetVisited(bool)
 }
 
 func CreateNode() Node {
-	return &nodeImpl{[]Edge{}, -1}
+	return &nodeImpl{[]Edge{}, -1, false}
 }
 
 type nodeImpl struct {
 	edges    []Edge
 	distance int
+	visited  bool
 }
 
 func (n *nodeImpl) GetEdges() []Edge {
@@ -37,4 +40,12 @@ func (n *nodeImpl) ConnectWith(node Node, costs int) {
 	edge := CreateEdge(n, node, costs)
 	n.AddEdge(edge)
 	node.AddEdge(edge)
+}
+
+func (n *nodeImpl) IsVisited() bool {
+	return n.visited
+}
+
+func (n *nodeImpl) SetVisited(visited bool) {
+	n.visited = visited
 }

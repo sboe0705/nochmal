@@ -13,6 +13,7 @@ func TestCreateNode(t *testing.T) {
 	// then
 	assertions.AssertEquals(t, -1, node.GetDistance(), "Wrong initial distance")
 	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
+	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
 }
 
 func TestConnectWith(t *testing.T) {
@@ -29,4 +30,15 @@ func TestConnectWith(t *testing.T) {
 
 	assertions.AssertEquals(t, node1.GetEdges()[0], node2.GetEdges()[0], "Different edge in connected nodes")
 	assertions.AssertEquals(t, costs, node1.GetEdges()[0].GetCosts(), "Wrong costs")
+}
+
+func TestSetVisited(t *testing.T) {
+	// given
+	node := CreateNode()
+
+	// when
+	node.SetVisited(true)
+
+	// then
+	assertions.AssertTrue(t, node.IsVisited(), "Invalid initial visited state")
 }
