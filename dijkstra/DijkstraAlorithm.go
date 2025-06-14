@@ -8,31 +8,47 @@ import (
 
 const debugPrefix = "Dijkstra Algoritm - "
 
-func DetermineDistances(rootNode Node) {
+func DetermineDistancesFrom(rootNode Node) {
 	rootNode.SetDistance(0)
-	nodesToVisit := &[]Node{rootNode}
+	nodesToVisit := determineNodes(rootNode)
 	visitedNodes := &[]Node{}
 	for len(*nodesToVisit) > 0 {
 		nextNode := getNextNodeToVisit(nodesToVisit)
-		visit(nextNode, nodesToVisit, visitedNodes)
+		visit(nextNode, visitedNodes)
+	}
+}
+
+func determineNodes(node Node) *[]Node {
+	nodes := &[]Node{node}
+	determineNodesRecursively(node, nodes)
+	return nodes
+}
+
+func determineNodesRecursively(node Node, nodes *[]Node) {
+	for i := range node.GetEdges() {
+		edge := node.GetEdges()[i]
+		nextNode := edge.GetOtherNode(node)
+		if addIfNotContains(nextNode, nodes) {
+			// visit next node recursively, only if it was added to list
+			determineNodesRecursively(nextNode, nodes)
+		}
 	}
 }
 
 func getNextNodeToVisit(nodesToVisit *[]Node) Node {
 	sortByDistance(*nodesToVisit)
 	nextNode := (*nodesToVisit)[0]
-	nextNode.SetVisited(true)
 	*nodesToVisit = (*nodesToVisit)[1:]
 	return nextNode
 }
 
-func visit(node Node, nodesToVisit, visitedNodes *[]Node) {
+func visit(node Node, visitedNodes *[]Node) {
+	node.SetVisited(true)
 	slog.Debug(debugPrefix+"visiting node", "node", node.ToString())
 	for i := range node.GetEdges() {
 		edge := node.GetEdges()[i]
 		nextNode := edge.GetOtherNode(node)
-		markNodeForVisit(nextNode, nodesToVisit, visitedNodes)
-		if !isAlreadyVisited(nextNode, visitedNodes) {
+		if !contains(nextNode, visitedNodes) {
 			oldDistance := nextNode.GetDistance()
 			newDistance := node.GetDistance() + edge.GetCosts()
 			if oldDistance == -1 {
@@ -49,31 +65,17 @@ func visit(node Node, nodesToVisit, visitedNodes *[]Node) {
 	*visitedNodes = append(*visitedNodes, node)
 }
 
-func markNodeForVisit(node Node, nodesToVisit, visitedNodes *[]Node) {
-	if isMarkedForVisit(node, nodesToVisit) {
-		slog.Debug(debugPrefix+"node is already marked for visit", "node", node.ToString())
-		return
+func addIfNotContains(node Node, nodes *[]Node) bool {
+	if contains(node, nodes) {
+		return false
 	}
-	if isAlreadyVisited(node, visitedNodes) {
-		slog.Debug(debugPrefix+"node has already been visited", "node", node.ToString())
-		return
-	}
-	slog.Debug(debugPrefix+"node is marked for visit", "node", node.ToString())
-	*nodesToVisit = append(*nodesToVisit, node)
+	*nodes = append(*nodes, node)
+	return true
 }
 
-func isMarkedForVisit(node Node, nodesToVisit *[]Node) bool {
-	for i := range *nodesToVisit {
-		if (*nodesToVisit)[i] == node {
-			return true
-		}
-	}
-	return false
-}
-
-func isAlreadyVisited(node Node, visitedNodes *[]Node) bool {
-	for i := range *visitedNodes {
-		if (*visitedNodes)[i] == node {
+func contains(node Node, nodes *[]Node) bool {
+	for i := range *nodes {
+		if (*nodes)[i] == node {
 			return true
 		}
 	}
@@ -82,6 +84,12 @@ func isAlreadyVisited(node Node, visitedNodes *[]Node) bool {
 
 func sortByDistance(nodes []Node) {
 	slices.SortFunc(nodes, func(a, b Node) int {
+		if a.GetDistance() < 0 {
+			return 1
+		}
+		if b.GetDistance() < 0 {
+			return -1
+		}
 		return cmp.Compare(a.GetDistance(), b.GetDistance())
 	})
 }
