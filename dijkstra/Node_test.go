@@ -30,6 +30,19 @@ func TestCreateNamedNode(t *testing.T) {
 	assertions.AssertEquals(t, nodeName, node.ToString(), "Invalid name")
 }
 
+func TestSetDistance(t *testing.T) {
+	// given
+	node := CreateNode() // distance not yet set
+
+	// when ... then
+	assertions.AssertEquals(t, nil, node.SetDistance(5), "Invalid error returned")
+
+	// when (increased already set distance)
+	err := node.SetDistance(6)
+	assertions.AssertTrue(t, err != nil, "No error returned")
+	assertions.AssertEquals(t, "already set distance cannot be increased", err.Error(), "Wrong error message")
+}
+
 func TestConnectWith(t *testing.T) {
 	node1 := CreateNode()
 	node2 := CreateNode()

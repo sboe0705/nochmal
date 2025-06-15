@@ -1,12 +1,15 @@
 package dijkstra
 
-import "fmt"
+import (
+	"fmt"
+	"log/slog"
+)
 
 type Node interface {
 	GetEdges() []Edge
 	AddEdge(edge Edge)
 	GetDistance() int
-	SetDistance(int)
+	SetDistance(int) error
 	ConnectWith(node Node, costs int)
 	IsVisited() bool
 	SetVisited(bool)
@@ -40,8 +43,14 @@ func (n *nodeImpl) GetDistance() int {
 	return n.distance
 }
 
-func (n *nodeImpl) SetDistance(distance int) {
-	n.distance = distance
+func (n *nodeImpl) SetDistance(distance int) error {
+	if n.distance < 0 || n.distance >= distance {
+		n.distance = distance
+		return nil
+	} else {
+		slog.Warn("Node distance has been increased after once set!", "node", n.ToString())
+		return fmt.Errorf("already set distance cannot be increased")
+	}
 }
 
 func (n *nodeImpl) ConnectWith(node Node, costs int) {
