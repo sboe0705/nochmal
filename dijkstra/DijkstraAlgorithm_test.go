@@ -37,42 +37,44 @@ func TestSortByDistance(t *testing.T) {
 	assertions.AssertArray(t, []Node{node0, node1, node2, node3}, nodes, "Array is sorted in wrong order")
 }
 
-func TestDetermineDistancesFrom(t *testing.T) {
+func TestDetermineDistances(t *testing.T) {
 	logging.Init()
 
 	// given
 	nodes := createSampleGraph()
 
-	// when
-	DetermineDistancesFrom(nodes[0])
+	// when (first run)
+	DetermineDistances(nodes[0])
 
 	// then
-	assertions.AssertEquals(t, 0, nodes[0].GetDistance(), "Wrong distance for node1")
-	assertions.AssertEquals(t, 7, nodes[1].GetDistance(), "Wrong distance for node1")
-	assertions.AssertEquals(t, 9, nodes[2].GetDistance(), "Wrong distance for node2")
-	assertions.AssertEquals(t, 20, nodes[3].GetDistance(), "Wrong distance for node3")
-	assertions.AssertEquals(t, 20, nodes[4].GetDistance(), "Wrong distance for node4")
-	assertions.AssertEquals(t, 11, nodes[5].GetDistance(), "Wrong distance for node5")
+	assertSampleDistances(t, nodes)
+
+	// when (repeated run)
+	DetermineDistances(nodes[0])
+
+	// then
+	assertSampleDistances(t, nodes)
+
+	// when (run with changed distances)
+	nodes[4].SetDistance(0)
+	DetermineDistances(nodes[0])
+
+	// then
+	assertNodeDistance(t, nodes[0], 0)
+	assertNodeDistance(t, nodes[1], 7)
+	assertNodeDistance(t, nodes[2], 9)
+	assertNodeDistance(t, nodes[3], 6)
+	assertNodeDistance(t, nodes[4], 0)
+	assertNodeDistance(t, nodes[5], 9)
 }
 
-func TestDetermineDistancesFromWithPresetDistances(t *testing.T) {
-	logging.Init()
-
-	// given
-	nodes := createSampleGraph()
-
-	// when
-	nodes[0].SetDistance(5) // ignore the preset distance in root node
-	nodes[4].SetDistance(0)
-	DetermineDistancesFrom(nodes[0])
-
-	// then
-	assertions.AssertEquals(t, 0, nodes[0].GetDistance(), "Wrong distance for node1")
-	assertions.AssertEquals(t, 7, nodes[1].GetDistance(), "Wrong distance for node1")
-	assertions.AssertEquals(t, 9, nodes[2].GetDistance(), "Wrong distance for node2")
-	assertions.AssertEquals(t, 6, nodes[3].GetDistance(), "Wrong distance for node3")
-	assertions.AssertEquals(t, 0, nodes[4].GetDistance(), "Wrong distance for node4")
-	assertions.AssertEquals(t, 9, nodes[5].GetDistance(), "Wrong distance for node5")
+func assertSampleDistances(t *testing.T, nodes []Node) {
+	assertNodeDistance(t, nodes[0], 0)
+	assertNodeDistance(t, nodes[1], 7)
+	assertNodeDistance(t, nodes[2], 9)
+	assertNodeDistance(t, nodes[3], 20)
+	assertNodeDistance(t, nodes[4], 20)
+	assertNodeDistance(t, nodes[5], 11)
 }
 
 func createSampleGraph() []Node {
@@ -94,4 +96,28 @@ func createSampleGraph() []Node {
 	node4.ConnectWith(node5, 9)
 
 	return []Node{node0, node1, node2, node3, node4, node5}
+}
+
+func TestDetermineDistancesWithPresetRootNodeDistance(t *testing.T) {
+	logging.Init()
+
+	// given
+	nodes := createSampleGraph()
+
+	// when
+	nodes[0].SetDistance(5)
+	nodes[4].SetDistance(0)
+	DetermineDistances(nodes[0])
+
+	// then
+	assertNodeDistance(t, nodes[0], 5)
+	assertNodeDistance(t, nodes[1], 12)
+	assertNodeDistance(t, nodes[2], 11)
+	assertNodeDistance(t, nodes[3], 6)
+	assertNodeDistance(t, nodes[4], 0)
+	assertNodeDistance(t, nodes[5], 9)
+}
+
+func assertNodeDistance(t *testing.T, node Node, expectedDistance int) {
+	assertions.AssertEquals(t, expectedDistance, node.GetDistance(), "Wrong distance for "+node.ToString())
 }

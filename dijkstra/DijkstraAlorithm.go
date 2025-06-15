@@ -8,8 +8,10 @@ import (
 
 const debugPrefix = "Dijkstra Algoritm - "
 
-func DetermineDistancesFrom(rootNode Node) {
-	rootNode.SetDistance(0)
+func DetermineDistances(rootNode Node) {
+	if rootNode.GetDistance() < 0 {
+		rootNode.SetDistance(0)
+	}
 	nodesToVisit := determineNodes(rootNode)
 	visitedNodes := &[]Node{}
 	for len(*nodesToVisit) > 0 {
