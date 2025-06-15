@@ -28,13 +28,13 @@ func TestSortByDistance(t *testing.T) {
 	node2.SetDistance(3)
 	node3 := CreateNamedNode("Node 3")
 	node3.SetDistance(-1)
-	nodes := []Node{node0, node1, node2, node3}
+	nodes := []Node[any]{node0, node1, node2, node3}
 
 	// when
 	sortByDistance(nodes)
 
 	// then
-	assertions.AssertArray(t, []Node{node0, node1, node2, node3}, nodes, "Array is sorted in wrong order")
+	assertions.AssertArray(t, []Node[any]{node0, node1, node2, node3}, nodes, "Array is sorted in wrong order")
 }
 
 func TestDetermineDistances(t *testing.T) {
@@ -68,7 +68,7 @@ func TestDetermineDistances(t *testing.T) {
 	assertNodeDistance(t, nodes[5], 9)
 }
 
-func assertSampleDistances(t *testing.T, nodes []Node) {
+func assertSampleDistances(t *testing.T, nodes []Node[any]) {
 	assertNodeDistance(t, nodes[0], 0)
 	assertNodeDistance(t, nodes[1], 7)
 	assertNodeDistance(t, nodes[2], 9)
@@ -77,7 +77,7 @@ func assertSampleDistances(t *testing.T, nodes []Node) {
 	assertNodeDistance(t, nodes[5], 11)
 }
 
-func createSampleGraph() []Node {
+func createSampleGraph() []Node[any] {
 	node0 := CreateNamedNode("Node 0")
 	node1 := CreateNamedNode("Node 1")
 	node2 := CreateNamedNode("Node 2")
@@ -95,7 +95,7 @@ func createSampleGraph() []Node {
 	node3.ConnectWith(node4, 6)
 	node4.ConnectWith(node5, 9)
 
-	return []Node{node0, node1, node2, node3, node4, node5}
+	return []Node[any]{node0, node1, node2, node3, node4, node5}
 }
 
 func TestDetermineDistancesWithPresetRootNodeDistance(t *testing.T) {
@@ -118,6 +118,6 @@ func TestDetermineDistancesWithPresetRootNodeDistance(t *testing.T) {
 	assertNodeDistance(t, nodes[5], 9)
 }
 
-func assertNodeDistance(t *testing.T, node Node, expectedDistance int) {
+func assertNodeDistance(t *testing.T, node Node[any], expectedDistance int) {
 	assertions.AssertEquals(t, expectedDistance, node.GetDistance(), "Wrong distance for "+node.ToString())
 }

@@ -1,35 +1,35 @@
 package dijkstra
 
-type Edge interface {
-	GetSource() Node
-	GetDestination() Node
-	GetOtherNode(node Node) Node
+type Edge[T any] interface {
+	GetSource() Node[T]
+	GetDestination() Node[T]
+	GetOtherNode(node Node[T]) Node[T]
 	GetCosts() int
 }
 
-func CreateEdge(source, destination Node, costs int) Edge {
-	return &edgeImpl{source, destination, costs}
+func CreateEdge[T any](source, destination Node[T], costs int) Edge[T] {
+	return &edgeImpl[T]{source, destination, costs}
 }
 
-type edgeImpl struct {
-	source      Node
-	destination Node
+type edgeImpl[T any] struct {
+	source      Node[T]
+	destination Node[T]
 	costs       int
 }
 
-func (e *edgeImpl) GetSource() Node {
+func (e *edgeImpl[T]) GetSource() Node[T] {
 	return e.source
 }
 
-func (e *edgeImpl) GetDestination() Node {
+func (e *edgeImpl[T]) GetDestination() Node[T] {
 	return e.destination
 }
 
-func (e *edgeImpl) GetCosts() int {
+func (e *edgeImpl[T]) GetCosts() int {
 	return e.costs
 }
 
-func (e *edgeImpl) GetOtherNode(node Node) Node {
+func (e *edgeImpl[T]) GetOtherNode(node Node[T]) Node[T] {
 	if e.GetSource() == node {
 		return e.GetDestination()
 	} else {

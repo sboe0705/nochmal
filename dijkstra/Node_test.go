@@ -1,6 +1,7 @@
 package dijkstra
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/sboe0705/assertions"
@@ -12,9 +13,10 @@ func TestCreateNode(t *testing.T) {
 
 	// then
 	assertions.AssertEquals(t, -1, node.GetDistance(), "Wrong initial distance")
-	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
+	assertions.AssertArray(t, []Edge[any]{}, node.GetEdges(), "Invalid initial edges")
 	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
-	assertions.AssertEquals(t, "&{name: edges:[] distance:-1 visited:false}", node.ToString(), "Wrong initial name")
+	assertions.AssertEquals(t, "&{value:<nil> name: edges:[] distance:-1 visited:false}", node.ToString(), "Wrong initial name")
+	assertions.AssertEquals(t, nil, node.GetValue(), "Invalid value")
 }
 
 func TestCreateNamedNode(t *testing.T) {
@@ -25,9 +27,31 @@ func TestCreateNamedNode(t *testing.T) {
 
 	// then
 	assertions.AssertEquals(t, -1, node.GetDistance(), "Wrong initial distance")
-	assertions.AssertArray(t, []Edge{}, node.GetEdges(), "Invalid initial edges")
+	assertions.AssertArray(t, []Edge[any]{}, node.GetEdges(), "Invalid initial edges")
 	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
 	assertions.AssertEquals(t, nodeName, node.ToString(), "Invalid name")
+	assertions.AssertEquals(t, nil, node.GetValue(), "Invalid value")
+}
+
+func TestCreateValuedNode(t *testing.T) {
+	// given
+	nameOf := func(value int) string {
+		return fmt.Sprintf("Node %d", value)
+	}
+
+	// when
+	node := CreateValuedNode(123, nameOf, distanceOf)
+
+	// then
+	assertions.AssertEquals(t, 12, node.GetDistance(), "Wrong initial distance")
+	assertions.AssertArray(t, []Edge[int]{}, node.GetEdges(), "Invalid initial edges")
+	assertions.AssertFalse(t, node.IsVisited(), "Invalid initial visited state")
+	assertions.AssertEquals(t, "Node 123", node.ToString(), "Invalid name")
+	assertions.AssertEquals(t, 123, node.GetValue(), "Wrong or missing value")
+}
+
+func distanceOf(value int) int {
+	return value / 10
 }
 
 func TestSetDistance(t *testing.T) {

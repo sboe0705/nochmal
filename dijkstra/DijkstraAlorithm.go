@@ -8,25 +8,25 @@ import (
 
 const debugPrefix = "Dijkstra Algoritm - "
 
-func DetermineDistances(rootNode Node) {
+func DetermineDistances(rootNode Node[any]) {
 	if rootNode.GetDistance() < 0 {
 		rootNode.SetDistance(0)
 	}
 	nodesToVisit := determineNodes(rootNode)
-	visitedNodes := &[]Node{}
+	visitedNodes := &[]Node[any]{}
 	for len(*nodesToVisit) > 0 {
 		nextNode := getNextNodeToVisit(nodesToVisit)
 		visit(nextNode, visitedNodes)
 	}
 }
 
-func determineNodes(node Node) *[]Node {
-	nodes := &[]Node{node}
+func determineNodes(node Node[any]) *[]Node[any] {
+	nodes := &[]Node[any]{node}
 	determineNodesRecursively(node, nodes)
 	return nodes
 }
 
-func determineNodesRecursively(node Node, nodes *[]Node) {
+func determineNodesRecursively(node Node[any], nodes *[]Node[any]) {
 	for i := range node.GetEdges() {
 		edge := node.GetEdges()[i]
 		nextNode := edge.GetOtherNode(node)
@@ -37,14 +37,14 @@ func determineNodesRecursively(node Node, nodes *[]Node) {
 	}
 }
 
-func getNextNodeToVisit(nodesToVisit *[]Node) Node {
+func getNextNodeToVisit(nodesToVisit *[]Node[any]) Node[any] {
 	sortByDistance(*nodesToVisit)
 	nextNode := (*nodesToVisit)[0]
 	*nodesToVisit = (*nodesToVisit)[1:]
 	return nextNode
 }
 
-func visit(node Node, visitedNodes *[]Node) {
+func visit(node Node[any], visitedNodes *[]Node[any]) {
 	node.SetVisited(true)
 	slog.Debug(debugPrefix+"visiting node", "node", node.ToString())
 	for i := range node.GetEdges() {
@@ -67,7 +67,7 @@ func visit(node Node, visitedNodes *[]Node) {
 	*visitedNodes = append(*visitedNodes, node)
 }
 
-func addIfNotContains(node Node, nodes *[]Node) bool {
+func addIfNotContains(node Node[any], nodes *[]Node[any]) bool {
 	if contains(node, nodes) {
 		return false
 	}
@@ -75,7 +75,7 @@ func addIfNotContains(node Node, nodes *[]Node) bool {
 	return true
 }
 
-func contains(node Node, nodes *[]Node) bool {
+func contains(node Node[any], nodes *[]Node[any]) bool {
 	for i := range *nodes {
 		if (*nodes)[i] == node {
 			return true
@@ -84,8 +84,8 @@ func contains(node Node, nodes *[]Node) bool {
 	return false
 }
 
-func sortByDistance(nodes []Node) {
-	slices.SortFunc(nodes, func(a, b Node) int {
+func sortByDistance(nodes []Node[any]) {
+	slices.SortFunc(nodes, func(a, b Node[any]) int {
 		if a.GetDistance() < 0 {
 			return 1
 		}
